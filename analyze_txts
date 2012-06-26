@@ -73,23 +73,13 @@ while (end_date > cur_date):
   updates.append((cur_date, record))
 
 
-## fire up jinja2.
-
-env = jinja2.Environment(loader=jinja2.FileSystemLoader('templates'))
-
-tpl = env.get_template('main.html')
-
-## generate some json
-
-dthandler = lambda obj: int(time.mktime(obj.timetuple())) if isinstance(obj, datetime.datetime) else None
-result = tpl.render({'updates': json.dumps(updates, default=dthandler)})
-
-
 ## output txt msg analysis webpage, embed scripts
 with open('templates/main.html', 'r') as tpl_file:
   template = tpl_file.read()
-  result = string.replace(template, 'UPDATES', json.dumps(result))
+  dthandler = lambda obj: int(time.mktime(obj.timetuple())) if isinstance(obj, datetime.datetime) else None
+  result = template.replace('UPDATES', json.dumps(updates, default=dthandler))
   with open('output.html', 'w') as f:
+    print("Writing analysis output")
     f.write(result)
 
 ## Write the result -- Profit?!? $$$
