@@ -43,13 +43,13 @@ conn = sqlite3.connect(db_file)
 c = conn.cursor()
 
 c.execute('SELECT date FROM message limit 1')
-start_date = datetime.datetime.fromtimestamp(int(c.fetchone()[0]))
-# and last date
-c.execute('SELECT date FROM message ORDER BY rowid DESC LIMIT 1;')
+#start_date = datetime.datetime.fromtimestamp(int(c.fetchone()[0]))
 start_timestamp = int(c.fetchone()[0])
 if (start_timestamp < imessage_offset):
-  start_timestap += imessage_offset
-end_date = datetime.datetime.fromtimestamp(start_timestamp)
+  start_timestamp += imessage_offset
+start_date = datetime.datetime.fromtimestamp(start_timestamp)
+# and last date
+#c.execute('SELECT date FROM message ORDER BY rowid DESC LIMIT 1;')
 # find last date
 
 def to_num(date_in):
@@ -64,7 +64,6 @@ def add_months(date_in, num_chg = 1):
 cur_date = datetime.datetime(start_date.year, start_date.month, 1)
 
 updates = []
-
 
 end_date = datetime.datetime.now()
 while (end_date > cur_date):
